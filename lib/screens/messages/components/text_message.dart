@@ -1,7 +1,7 @@
-import 'package:chat/models/ChatMessage.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+import '../../../models/ChatMessage.dart';
 
 class TextMessage extends StatelessWidget {
   const TextMessage({
@@ -14,9 +14,9 @@ class TextMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: MediaQuery.of(context).platformBrightness == Brightness.dark
-          ? Colors.white
-          : Colors.black,
+      // color: MediaQuery.of(context).platformBrightness == Brightness.dark
+      //     ? Colors.white
+      //     : Colors.black,
       padding: EdgeInsets.symmetric(
         horizontal: kDefaultPadding * 0.75,
         vertical: kDefaultPadding / 2,

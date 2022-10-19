@@ -1,6 +1,7 @@
-import 'package:chat/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'constants.dart';
 
 // This is our  main focus
 // Let's apply light and dark theme on our app

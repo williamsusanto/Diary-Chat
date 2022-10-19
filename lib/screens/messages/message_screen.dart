@@ -1,5 +1,6 @@
-import 'package:chat/constants.dart';
 import 'package:flutter/material.dart';
+
+import '../../constants.dart';
 
 import 'components/body.dart';
 

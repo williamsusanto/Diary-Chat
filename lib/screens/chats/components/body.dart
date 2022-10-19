@@ -1,9 +1,9 @@
-import 'package:chat/components/filled_outline_button.dart';
-import 'package:chat/constants.dart';
-import 'package:chat/models/Chat.dart';
-import 'package:chat/screens/messages/message_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../../components/filled_outline_button.dart';
+import '../../../constants.dart';
+import '../../../models/Chat.dart';
+import '../../messages/message_screen.dart';
 import 'chat_card.dart';
 
 class Body extends StatelessWidget {

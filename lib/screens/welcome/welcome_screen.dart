@@ -1,6 +1,7 @@
-import 'package:chat/constants.dart';
-import 'package:chat/screens/signinOrSignUp/signin_or_signup_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../../constants.dart';
+import '../signinOrSignUp/signin_or_signup_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
@@ -10,10 +11,10 @@ class WelcomeScreen extends StatelessWidget {
         child: Column(
           children: [
             Spacer(flex: 2),
-            Image.asset("assets/images/welcome_image.png"),
+            Image.asset('assets/images/welcome_image.png'),
             Spacer(flex: 3),
             Text(
-              "Welcome to our freedom \nmessaging app",
+              'Welcome to our freedom \nmessaging app',
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme
@@ -22,7 +23,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
             Spacer(),
             Text(
-              "Freedom talk any person of your \nmother language.",
+              'Freedom talk any person of your \nmother language.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context)
@@ -44,7 +45,7 @@ class WelcomeScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        "Skip",
+                        'Skip',
                         style: Theme.of(context).textTheme.bodyText1!.copyWith(
                               color: Theme.of(context)
                                   .textTheme
