@@ -1,22 +1,45 @@
+import 'package:chatter/app.dart';
+import 'package:chatter/screens/screens.dart';
+import 'package:chatter/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
-import 'screens/welcome/welcome_screen.dart';
-import 'theme.dart';
+void main()  {
+  
+  final client = StreamChatClient(streamKey);
 
-void main() {
-  runApp(MyApp());
+  runApp(
+    MyApp(
+      client: client,
+    )
+  );
 }
-
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp({
+    Key? key,
+    required this.client,
+  }) : super(key: key);
+
+  final StreamChatClient client;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: lightThemeData(context),
-      darkTheme: darkThemeData(context),
-      home: WelcomeScreen(),
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      themeMode: ThemeMode.dark,
+      title: 'Chatter',
+      builder: (context, child) {
+        return StreamChatCore(
+          client: client,
+          child: ChannelsBloc(
+            child: UsersBloc(
+              child: child!
+            ),
+          ),
+        );
+      },
+      home: const SplashScreen(),
     );
   }
 }
