@@ -1,7 +1,7 @@
-import 'package:chatter/models/models.dart';
-import 'package:chatter/screens/screens.dart';
-import 'package:chatter/theme.dart';
-import 'package:chatter/widgets/widgets.dart';
+import 'package:diary_chat/models/models.dart';
+import 'package:diary_chat/screens/screens.dart';
+import 'package:diary_chat/theme.dart';
+import 'package:diary_chat/widgets/widgets.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';

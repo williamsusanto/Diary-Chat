@@ -31,6 +31,9 @@ dependencies:
   google_fonts: ^3.0.1
   stream_chat_flutter_core: ^5.0.0
   logger: ^1.1.0
+  jiffy: ^5.0.0
+  faker: ^2.0.0
+  cached_network_image: ^3.2.2
 
 dev_dependencies:
   flutter_test:

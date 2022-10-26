@@ -1,15 +1,12 @@
-import 'package:chatter/pages/pages.dart';
-import 'package:chatter/screens/screens.dart';
-import 'package:chatter/theme.dart';
-import 'package:chatter/widgets/widgets.dart';
+import 'package:diary_chat/pages/pages.dart';
+import 'package:diary_chat/theme.dart';
+import 'package:diary_chat/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:chatter/app.dart';
+
+import '../helpers.dart';
 
 class HomeScreen extends StatelessWidget {
-  static Route get route => MaterialPageRoute(
-        builder: (context) => HomeScreen(),
-      );
   HomeScreen({Key? key}) : super(key: key);
 
   final ValueNotifier<int> pageIndex = ValueNotifier(0);
@@ -66,15 +63,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 24.0),
-            child: Hero(
-              tag: 'hero-profile-picture',
-              child: Avatar.small(
-                url: context.currentUserImage,
-                onTap: () {
-                  Navigator.of(context).push(ProfileScreen.route);
-                },
-              ),
-            ),
+            child: Avatar.small(url: Helpers.randomPictureUrl()),
           ),
         ],
       ),

@@ -1,26 +1,11 @@
-import 'package:chatter/app.dart';
-import 'package:chatter/screens/screens.dart';
-import 'package:chatter/theme.dart';
+import 'package:diary_chat/screens/screens.dart';
+import 'package:diary_chat/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
-void main()  {
-  
-  final client = StreamChatClient(streamKey);
+void main() => runApp(const MyApp());
 
-  runApp(
-    MyApp(
-      client: client,
-    )
-  );
-}
 class MyApp extends StatelessWidget {
-  const MyApp({
-    Key? key,
-    required this.client,
-  }) : super(key: key);
-
-  final StreamChatClient client;
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,18 +13,8 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       themeMode: ThemeMode.dark,
-      title: 'Chatter',
-      builder: (context, child) {
-        return StreamChatCore(
-          client: client,
-          child: ChannelsBloc(
-            child: UsersBloc(
-              child: child!
-            ),
-          ),
-        );
-      },
-      home: const SplashScreen(),
+      title: 'Diary Chat',
+      home: HomeScreen(),
     );
   }
 }

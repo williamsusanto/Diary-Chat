@@ -1,15 +1,12 @@
-import 'package:chatter/app.dart';
-import 'package:chatter/models/models.dart';
-import 'package:chatter/theme.dart';
-import 'package:chatter/widgets/display_error_message.dart';
-import 'package:chatter/widgets/glowing_action_button.dart';
-import 'package:chatter/widgets/widgets.dart';
+import 'package:diary_chat/models/models.dart';
+import 'package:diary_chat/theme.dart';
+import 'package:diary_chat/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   static Route route(MessageData data) => MaterialPageRoute(
         builder: (context) => ChatScreen(
           messageData: data,
@@ -22,6 +19,15 @@ class ChatScreen extends StatelessWidget {
   }) : super(key: key);
 
   final MessageData messageData;
+
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  final _textController = TextEditingController();
+  String message = '';
+  List<Message> messages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +48,7 @@ class ChatScreen extends StatelessWidget {
           ),
         ),
         title: _AppBarTitle(
-          messageData: messageData,
+          messageData: widget.messageData,
         ),
         actions: [
           Padding(
@@ -66,22 +72,81 @@ class ChatScreen extends StatelessWidget {
         ],
       ),
       body: Column(
-          children: [
-            Expanded(
-              child: MessageListCore(
-                loadingBuilder: (context) {
-                  return const Center(child: CircularProgressIndicator());
-                },
-                emptyBuilder: (context) => const SizedBox.shrink(),
-                errorBuilder: (context, error) =>
-                    DisplayErrorMessage(error: error),
-                messageListBuilder: (context, messages) =>
-                    _MessageList(messages: messages),
-              ),
+        children: [
+          Expanded(
+            child: _MessageList(messages: messages),
+          ),
+          SafeArea(
+            bottom: true,
+            top: false,
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      right: BorderSide(
+                        width: 2,
+                        color: Theme.of(context).dividerColor,
+                      ),
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Icon(
+                      CupertinoIcons.camera_fill,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 16.0),
+                    child: TextField(
+                      controller: _textController,
+                      style: TextStyle(fontSize: 14),
+                      decoration: const InputDecoration(
+                        hintText: 'Type something...',
+                        border: InputBorder.none,
+                      ),
+                      onSubmitted: (_) => setState(() {
+                        if (_textController.text.isNotEmpty) {
+                          message = _textController.text;
+                          messages.insert(
+                              0,
+                              Message(
+                                  text: message, createdAt: DateTime.now()));
+                          _textController.clear();
+                        }
+                      }),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 12,
+                    right: 24.0,
+                  ),
+                  child: GlowingActionButton(
+                    color: AppColors.accent,
+                    icon: Icons.send_rounded,
+                    onPressed: () {
+                      setState(() {
+                        if (_textController.text.isNotEmpty) {
+                          message = _textController.text;
+                          messages.insert(
+                              0,
+                              Message(
+                                  text: message, createdAt: DateTime.now()));
+                          _textController.clear();
+                        }
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
-            const _ActionBar(),
-          ],
-        ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -127,68 +192,11 @@ class _MessageList extends StatelessWidget {
         itemBuilder: (context, index) {
           if (index < messages.length) {
             final message = messages[index];
-            if (message.user?.id == context.currentUser?.id) {
-              return _MessageOwnTile(message: message);
-            } else {
-              return _MessageTile(message: message);
-            }
+            return _MessageOwnTile(message: message);
           } else {
             return const SizedBox.shrink();
           }
         },
-      ),
-    );
-  }
-}
-
-class _MessageTile extends StatelessWidget {
-  const _MessageTile({
-    Key? key,
-    required this.message,
-  }) : super(key: key);
-
-  final Message message;
-
-  static const _borderRadius = 26.0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(_borderRadius),
-                  topRight: Radius.circular(_borderRadius),
-                  bottomRight: Radius.circular(_borderRadius),
-                ),
-              ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
-                child: Text(message.text ?? ''),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                message.createdAt.toLocal().toString(),
-                style: const TextStyle(
-                  color: AppColors.textFaded,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            )
-          ],
-        ),
       ),
     );
   }
@@ -226,7 +234,7 @@ class _MessageOwnTile extends StatelessWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
-                child: Text(message.text ?? '',
+                child: Text(message.text.toString(),
                     style: const TextStyle(
                       color: AppColors.textLigth,
                     )),
@@ -235,7 +243,7 @@ class _MessageOwnTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
-                message.createdAt.toLocal().toString(),
+                Jiffy(message.createdAt.toLocal()).jm,
                 style: const TextStyle(
                   color: AppColors.textFaded,
                   fontSize: 10,
@@ -259,12 +267,10 @@ class _DateLable extends StatefulWidget {
   final DateTime dateTime;
 
   @override
-  __DateLableState createState() => __DateLableState();
+  State<_DateLable> createState() => _DateLableState();
 }
 
-
-
-class __DateLableState extends State<_DateLable> {
+class _DateLableState extends State<_DateLable> {
   late String dayInfo;
 
   @override
@@ -293,7 +299,7 @@ class __DateLableState extends State<_DateLable> {
 
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -362,63 +368,6 @@ class _AppBarTitle extends StatelessWidget {
           ),
         )
       ],
-    );
-  }
-}
-
-class _ActionBar extends StatelessWidget {
-  const _ActionBar({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: true,
-      top: false,
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                right: BorderSide(
-                  width: 2,
-                  color: Theme.of(context).dividerColor,
-                ),
-              ),
-            ),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Icon(
-                CupertinoIcons.camera_fill,
-              ),
-            ),
-          ),
-          const Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 16.0),
-              child: TextField(
-                style: TextStyle(fontSize: 14),
-                decoration: InputDecoration(
-                  hintText: 'Type something...',
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 12,
-              right: 24.0,
-            ),
-            child: GlowingActionButton(
-              color: AppColors.accent,
-              icon: Icons.send_rounded,
-              onPressed: () {
-                print('TODO: send a message');
-              },
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
