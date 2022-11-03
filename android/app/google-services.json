@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "573176714359",
+    "firebase_url": "https://manito-5aa90-default-rtdb.firebaseio.com",
+    "project_id": "manito-5aa90",
+    "storage_bucket": "manito-5aa90.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:573176714359:android:9127bf5520ad37159aa272",
+        "android_client_info": {
+          "package_name": "com.example.diary_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "573176714359-1f25fshrnvmc4ou7nqfv6vcop0ebdqcq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOfdIMZKGQmDir21PKKVpT6d9bsieq4QA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "573176714359-1f25fshrnvmc4ou7nqfv6vcop0ebdqcq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,7 @@
 import 'package:diary_chat/models/models.dart';
 import 'package:diary_chat/theme.dart';
 import 'package:diary_chat/widgets/widgets.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
@@ -19,6 +20,7 @@ class ChatScreen extends StatefulWidget {
   }) : super(key: key);
 
   final MessageData messageData;
+  // final FirebaseApp app;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -28,9 +30,33 @@ class _ChatScreenState extends State<ChatScreen> {
   final _textController = TextEditingController();
   String message = '';
   List<Message> messages = [];
+  final database = FirebaseDatabase.instance.ref();
+  String botMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _activateListeners();
+  }
+
+  void _activateListeners() {
+    const PATH = 'diaries/123/message';
+
+    database.child(PATH).onValue.listen((event) {
+      if (event.snapshot.value.toString() != '') {
+        final String description = event.snapshot.value.toString();
+        setState(() {
+          botMessage = description;
+          messages.insert(
+              0, Message(text: description, createdAt: DateTime.now()));
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final diaryRef = database.child('diaries/123');
     return Scaffold(
       appBar: AppBar(
         iconTheme: Theme.of(context).iconTheme,
@@ -114,6 +140,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               0,
                               Message(
                                   text: message, createdAt: DateTime.now()));
+                          diaryRef.set({'message': _textController.text});
                           _textController.clear();
                         }
                       }),
@@ -136,6 +163,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               0,
                               Message(
                                   text: message, createdAt: DateTime.now()));
+                          diaryRef.set({'message': _textController.text});
                           _textController.clear();
                         }
                       });
@@ -192,11 +220,68 @@ class _MessageList extends StatelessWidget {
         itemBuilder: (context, index) {
           if (index < messages.length) {
             final message = messages[index];
+            // if (message.user?.id == context.currentUser?.id) {
             return _MessageOwnTile(message: message);
+            // } else {
+            //   return _MessageTile(message: message);
+            // }
           } else {
             return const SizedBox.shrink();
           }
         },
+      ),
+    );
+  }
+}
+
+class _MessageTile extends StatelessWidget {
+  const _MessageTile({
+    Key? key,
+    required this.message,
+  }) : super(key: key);
+
+  final Message message;
+
+  static const _borderRadius = 26.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(_borderRadius),
+                  topRight: Radius.circular(_borderRadius),
+                  bottomRight: Radius.circular(_borderRadius),
+                ),
+              ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
+                child: Text(message.text ?? ''),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                Jiffy(message.createdAt.toLocal()).jm,
+                style: const TextStyle(
+                  color: AppColors.textFaded,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
