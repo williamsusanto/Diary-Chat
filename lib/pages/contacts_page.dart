@@ -5,8 +5,11 @@ class ContactsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('ContactsPage'),
+    return Center(
+      child: ElevatedButton(
+        child: const Text('testing transition'),
+        onPressed: (){},
+      ),
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:diary_chat/theme.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({Key? key}) : super(key: key);
@@ -78,8 +78,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       Positioned(
                           top: 10,
                           left: 46,
-                          child: SvgPicture.asset('assets/icons/smile.svg',
-                              semanticsLabel: 'smile')),
+                          child: Image.asset('assets/images/diary_logo_gray')),
                       Positioned.fill(
                           top: 66,
                           left: 0,
@@ -98,23 +97,20 @@ class _WelcomePageState extends State<WelcomePage> {
                 top: 413,
                 left: 0,
                 width: width,
-                child: SvgPicture.asset('assets/icons/vector8.svg',
-                    semanticsLabel: 'vector8')),
+                child: Image.asset('assets/images/diary_logo_gray')),
             Positioned(
                 top: 531.5,
                 left: 0,
                 width: width,
                 child: Transform.scale(
                   scaleX: -1,
-                  child: SvgPicture.asset('assets/icons/vector7.svg',
-                      semanticsLabel: 'vector7'),
+                  child: Image.asset('assets/images/diary_logo_gray'),
                 )),
             Positioned(
                 top: 642.5,
                 left: 0,
                 width: width,
-                child: SvgPicture.asset('assets/icons/vector9.svg',
-                    semanticsLabel: 'vector9')),
+                child: Image.asset('assets/images/diary_logo_gray')),
             // Positioned(
             //     top: 19,
             //     left: 288,
