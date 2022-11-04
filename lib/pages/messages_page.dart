@@ -129,7 +129,7 @@ class _MessageTile extends StatelessWidget {
                       width: 18,
                       height: 18,
                       decoration: const BoxDecoration(
-                        color: AppColors.secondary,
+                        color: AppColors.primary,
                         shape: BoxShape.circle,
                       ),
                       child: const Center(
@@ -137,7 +137,7 @@ class _MessageTile extends StatelessWidget {
                           '1',
                           style: TextStyle(
                             fontSize: 10,
-                            color: AppColors.textLigth,
+                            color: AppColors.textLight,
                           ),
                         ),
                       ),

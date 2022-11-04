@@ -4,6 +4,8 @@ import 'package:diary_chat/widgets/widgets.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
@@ -61,38 +63,39 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         iconTheme: Theme.of(context).iconTheme,
         centerTitle: false,
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.primary,
         elevation: 0,
         leadingWidth: 54,
         leading: Align(
           alignment: Alignment.centerRight,
           child: IconBackground(
-            icon: CupertinoIcons.back,
+            icon: Icons.arrow_back,
             onTap: () {
               Navigator.of(context).pop();
             },
           ),
         ),
-        title: _AppBarTitle(
-          messageData: widget.messageData,
+        title: Text(
+          'Back',
+          style: GoogleFonts.poppins(),
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Center(
-              child: IconBorder(
-                icon: CupertinoIcons.video_camera_solid,
-                onTap: () {},
-              ),
-            ),
-          ),
-          Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: Center(
-              child: IconBorder(
-                icon: CupertinoIcons.phone_solid,
-                onTap: () {},
-              ),
+            child: Column(
+              children: [
+                Container(
+                  height: 25,
+                  child: IconBorder(
+                    icon: CupertinoIcons.ellipsis,
+                    onTap: () {},
+                  ),
+                ),
+                Text(
+                  'Setting',
+                  style: GoogleFonts.poppins(),
+                ),
+              ],
             ),
           ),
         ],
@@ -118,14 +121,13 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   child: const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Icon(
-                      CupertinoIcons.camera_fill,
-                    ),
+                    child: Icon(CupertinoIcons.plus,
+                        size: 33, color: AppColors.primary),
                   ),
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(left: 16.0),
+                    padding: EdgeInsets.only(left: 16.0, right: 10),
                     child: TextField(
                       controller: _textController,
                       style: TextStyle(fontSize: 14),
@@ -149,11 +151,27 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
+                    left: 1,
+                    right: 1.0,
+                  ),
+                  child: InkWell(
+                    child: Icon(
+                      Icons.mic,
+                      size: 33,
+                      color: AppColors.primary,
+                    ),
+                    onTap: () {
+                      setState(() {});
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
                     left: 12,
-                    right: 24.0,
+                    right: 12.0,
                   ),
                   child: GlowingActionButton(
-                    color: AppColors.accent,
+                    color: AppColors.primary,
                     icon: Icons.send_rounded,
                     onPressed: () {
                       setState(() {
@@ -254,27 +272,64 @@ class _MessageTile extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(_borderRadius),
-                  topRight: Radius.circular(_borderRadius),
-                  bottomRight: Radius.circular(_borderRadius),
+            Row(
+              children: [
+                Container(
+                    width: 59,
+                    height: 59,
+                    child: Stack(children: <Widget>[
+                      Positioned(
+                          top: 0,
+                          left: 0,
+                          child: Container(
+                              width: 59,
+                              height: 59,
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(138, 136, 209, 1),
+                                borderRadius:
+                                    BorderRadius.all(Radius.elliptical(59, 59)),
+                              ))),
+                      Positioned(
+                          top: 8,
+                          left: 2,
+                          child: Container(
+                              width: 55,
+                              height: 42,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage('assets/images/Manito.png'),
+                                    fit: BoxFit.fitWidth),
+                              ))),
+                    ])),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(_borderRadius),
+                      topRight: Radius.circular(_borderRadius),
+                      bottomRight: Radius.circular(_borderRadius),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 8),
+                    child: Text(
+                      message.text ?? '',
+                      style: GoogleFonts.poppins(
+                        color: AppColors.textDark,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
-                child: Text(message.text ?? ''),
-              ),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
                 Jiffy(message.createdAt.toLocal()).jm,
                 style: const TextStyle(
-                  color: AppColors.textFaded,
+                  color: AppColors.textDark,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
                 ),
@@ -318,10 +373,10 @@ class _MessageOwnTile extends StatelessWidget {
               ),
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
                 child: Text(message.text.toString(),
-                    style: const TextStyle(
-                      color: AppColors.textLigth,
+                    style: GoogleFonts.poppins(
+                      color: AppColors.textDark,
                     )),
               ),
             ),
@@ -330,7 +385,7 @@ class _MessageOwnTile extends StatelessWidget {
               child: Text(
                 Jiffy(message.createdAt.toLocal()).jm,
                 style: const TextStyle(
-                  color: AppColors.textFaded,
+                  color: AppColors.textDark,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
                 ),
@@ -400,9 +455,9 @@ class _DateLableState extends State<_DateLable> {
             child: Text(
               dayInfo,
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: AppColors.textFaded,
+                color: AppColors.textDark,
               ),
             ),
           ),

@@ -1,4 +1,4 @@
-import 'package:diary_chat/screens/screens.dart';
+import 'package:diary_chat/pages/pages.dart';
 import 'package:diary_chat/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       title: 'Diary Chat',
-      home: HomeScreen(),
+      home: WelcomePage(),
     );
   }
 }

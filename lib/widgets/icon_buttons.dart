@@ -14,17 +14,15 @@ class IconBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).cardColor,
-      borderRadius: BorderRadius.circular(6),
+      color: AppColors.primary,
       child: InkWell(
-        borderRadius: BorderRadius.circular(6),
-        splashColor: AppColors.secondary,
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(6),
+          padding: const EdgeInsets.all(0),
           child: Icon(
             icon,
-            size: 22,
+            size: 40,
+            color: AppColors.cardLight,
           ),
         ),
       ),
@@ -45,24 +43,10 @@ class IconBorder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(6),
-      splashColor: AppColors.secondary,
+      splashColor: AppColors.primary,
       onTap: onTap,
       child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(
-            width: 2,
-            color: Theme.of(context).cardColor,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(4),
-          child: Icon(
-            icon,
-            size: 22,
-          ),
-        ),
+        child: Icon(icon, size: 35, color: AppColors.cardLight),
       ),
     );
   }
