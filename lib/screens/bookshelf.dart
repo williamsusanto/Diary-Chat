@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 
 class BookShelf extends StatefulWidget {
   @override
-  _Diarybookshelf1WidgetState createState() => _Diarybookshelf1WidgetState();
+  _BookShelfState createState() => _BookShelfState();
 }
 
-class _Diarybookshelf1WidgetState extends State<BookShelf> {
+class _BookShelfState extends State<BookShelf> {
   @override
   Widget build(BuildContext context) {
-    // Figma Flutter Generator Diarybookshelf1Widget - FRAME
 
     return Container(
         width: 390,
@@ -19,6 +18,12 @@ class _Diarybookshelf1WidgetState extends State<BookShelf> {
         ),
         child: Stack(
             children: <Widget>[
+              ElevatedButton(
+                child: const Text('go back'),
+                onPressed: (){
+                  Navigator.pop(context);
+                }
+              ),
               Positioned(
                   top: 0,
                   left: 0,
