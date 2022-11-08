@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:diary_chat/screens/bookshelf_body.dart';
 
 
 class BookShelf extends StatefulWidget {
@@ -9,6 +11,27 @@ class BookShelf extends StatefulWidget {
 class _BookShelfState extends State<BookShelf> {
   @override
   Widget build(BuildContext context) {
+
+    return MaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: Color.fromRGBO(138, 136, 209, 1),
+      ),
+      home: Scaffold(
+       appBar: AppBar(
+         leading:
+           IconButton(
+             onPressed: () {},
+             icon: SvgPicture.asset("assets/icons/back_icon.svg"),
+             iconSize: 10,
+           ),
+
+         title: Text('Back'),
+         backgroundColor: Color.fromRGBO(138, 136, 209, 1),
+         ),
+        body: Body(),
+        bottomNavigationBar: BottomAppBar(),
+      )
+    );
 
     return Container(
         width: 390,
