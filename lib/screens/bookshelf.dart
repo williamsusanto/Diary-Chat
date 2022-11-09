@@ -17,6 +17,7 @@ class _BookShelfState extends State<BookShelf> {
         scaffoldBackgroundColor: Color.fromRGBO(138, 136, 209, 1),
       ),
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
        appBar: AppBar(
          leading:
            IconButton(
@@ -28,10 +29,23 @@ class _BookShelfState extends State<BookShelf> {
          title: Text('Back'),
          backgroundColor: Color.fromRGBO(138, 136, 209, 1),
          ),
-        body: Body(),
-        bottomNavigationBar: BottomAppBar(),
-      )
-    );
+        body: SingleChildScrollView(
+          child: Body(),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset("assets/icons/diary_icon.svg"),
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset("assets/icons/reminder_icon.svg"),
+            ),
+          ],
+        ),
+        ),
+      );
+
 
     return Container(
         width: 390,

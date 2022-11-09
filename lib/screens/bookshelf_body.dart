@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+//bookshelf body
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,6 @@ class Body extends StatelessWidget {
             margin: EdgeInsets.only(top: 150) ,
             width: size.width,
             height: size.height,
-
             decoration: BoxDecoration(
               color: Colors.white,
                 borderRadius:  BorderRadius.only(
@@ -29,15 +28,3 @@ class Body extends StatelessWidget {
   );
   }
 }
-
-//                  top: 253,
-//                   left: 0,
-//                   child: Container(
-//                       width: 390,
-//                       height: 592,
-//                       decoration: BoxDecoration(
-//                         borderRadius : BorderRadius.only(
-//                           topLeft: Radius.circular(30),
-//                           topRight: Radius.circular(30),
-//                           bottomLeft: Radius.circular(0),
-//                           bottomRight: Radius.circular(0),
