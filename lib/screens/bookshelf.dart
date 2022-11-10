@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary_chat/screens/bookshelf_body.dart';
+import 'package:diary_chat/screens/bookshelf_bottom.dart';
 
 
 class BookShelf extends StatefulWidget {
@@ -32,19 +33,11 @@ class _BookShelfState extends State<BookShelf> {
         body: SingleChildScrollView(
           child: Body(),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.white,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset("assets/icons/diary_icon.svg"),
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset("assets/icons/reminder_icon.svg"),
-            ),
-          ],
+        bottomNavigationBar: SingleChildScrollView(
+          child: Bottom(),
         ),
-        ),
-      );
+      ),
+    );
 
 
     return Container(
