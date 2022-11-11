@@ -5,9 +5,10 @@ abstract class AppColors {
   static const primary = Color(0xFF8A89D1);
   static const secondary = Color(0xFFB7B6F1);
   static const accent = Color(0xFFD6755B);
+  static const text = Color(0xFF535353);
   static const textDark = Color(0xFF000000);
   static const textLight = Color(0xFFF5F5F5);
-  static const textFaded = Color(0xFF9899A5);
+  static const textFaded = Color(0xFFEEEEEE);
   static const iconLight = Color(0xFFB1B4C0);
   static const iconDark = Color(0xFFB1B3C1);
   static const textHighlight = primary;

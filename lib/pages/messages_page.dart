@@ -97,7 +97,7 @@ class _MessageTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 12,
-                          color: AppColors.textFaded,
+                          color: AppColors.textDark,
                         ),
                       ),
                     ),
@@ -119,7 +119,7 @@ class _MessageTile extends StatelessWidget {
                         fontSize: 11,
                         letterSpacing: -0.2,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.textFaded,
+                        color: AppColors.textDark,
                       ),
                     ),
                     const SizedBox(
@@ -174,7 +174,7 @@ class _Stories extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 15,
-                    color: AppColors.textFaded,
+                    color: AppColors.textDark,
                   ),
                 ),
               ),

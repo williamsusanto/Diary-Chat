@@ -1,4 +1,5 @@
-import 'package:diary_chat/screens/screens.dart';
+import 'package:diary_chat/pages/pages.dart';
+import 'package:diary_chat/screens/chats_screen.dart';
 import 'package:diary_chat/theme.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -28,7 +29,7 @@ class _WelcomePageState extends State<WelcomePage> {
   _navigateToHome() async {
     await Future.delayed(Duration(milliseconds: 1700), () {});
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => ChatsScreen()));
+        context, MaterialPageRoute(builder: (context) => HomePage()));
   }
 
   @override
@@ -115,35 +116,6 @@ class _WelcomePageState extends State<WelcomePage> {
                 width: width,
                 child: SvgPicture.asset('assets/icons/vector9.svg',
                     semanticsLabel: 'vector9')),
-            // Positioned(
-            //     top: 19,
-            //     left: 288,
-            //     child: SvgPicture.asset('assets/icons/test.svg',
-            //         semanticsLabel: 'vector9')),
-            // Positioned(
-            //     top: 18,
-            //     left: 315,
-            //     child: SvgPicture.asset('assets/icons/test.svg',
-            //         semanticsLabel: 'vector9')),
-            // Positioned(
-            //     top: 18,
-            //     left: 339,
-            //     child: SvgPicture.asset('assets/icons/test.svg',
-            //         semanticsLabel: 'vector9')),
-            Positioned(
-                top: 18,
-                left: 43,
-                child: Text(
-                  '11:53',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Color.fromRGBO(0, 0, 0, 1),
-                      fontFamily: 'Poppins',
-                      fontSize: 17,
-                      letterSpacing: -0.5,
-                      fontWeight: FontWeight.normal,
-                      height: 1),
-                )),
           ])),
     );
   }

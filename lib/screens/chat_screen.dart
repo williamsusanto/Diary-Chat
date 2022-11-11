@@ -4,24 +4,19 @@ import 'package:diary_chat/widgets/widgets.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
 class ChatScreen extends StatefulWidget {
   static Route route(MessageData data) => MaterialPageRoute(
-        builder: (context) => ChatScreen(
-          messageData: data,
-        ),
+        builder: (context) => ChatScreen(),
       );
 
   const ChatScreen({
     Key? key,
-    required this.messageData,
   }) : super(key: key);
 
-  final MessageData messageData;
   // final FirebaseApp app;
 
   @override
@@ -239,9 +234,9 @@ class _MessageList extends StatelessWidget {
           if (index < messages.length) {
             final message = messages[index];
             // if (message.user?.id == context.currentUser?.id) {
-            return _MessageOwnTile(message: message);
+            // return _MessageOwnTile(message: message);
             // } else {
-            //   return _MessageTile(message: message);
+            return _MessageTile(message: message);
             // }
           } else {
             return const SizedBox.shrink();
@@ -279,8 +274,6 @@ class _MessageTile extends StatelessWidget {
                     height: 59,
                     child: Stack(children: <Widget>[
                       Positioned(
-                          top: 0,
-                          left: 0,
                           child: Container(
                               width: 59,
                               height: 59,
@@ -298,13 +291,13 @@ class _MessageTile extends StatelessWidget {
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image:
-                                        AssetImage('assets/images/Manito.png'),
+                                        AssetImage('assets/images/Manito_small.png'),
                                     fit: BoxFit.fitWidth),
                               ))),
                     ])),
                 Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
+                    color: AppColors.textFaded,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(_borderRadius),
                       topRight: Radius.circular(_borderRadius),
