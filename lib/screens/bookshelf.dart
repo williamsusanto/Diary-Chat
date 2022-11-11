@@ -20,6 +20,7 @@ class _BookShelfState extends State<BookShelf> {
       home: Scaffold(
         resizeToAvoidBottomInset: false,
        appBar: AppBar(
+         elevation: 0,
          leading:
            IconButton(
              onPressed: () {},
