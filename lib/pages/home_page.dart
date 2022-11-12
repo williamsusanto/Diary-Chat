@@ -62,9 +62,9 @@ class _HomePageState extends State<HomePage> {
                   height: 0.8333333333333334),
             ),
           )),
-          Align(
-            alignment: Alignment.bottomCenter,
-            heightFactor: 9.5,
+          Positioned(
+            top: 380,
+            left: 99,
             child: Container(
               width: 192,
               height: 63,
@@ -80,8 +80,9 @@ class _HomePageState extends State<HomePage> {
                   )),
             ),
           ),
+          //Prompt: "Or say "Hey Manito!"
           Positioned(
-              top: 680,
+              top: 580,
               left: 68,
               child: Material(
                 child: Text(
@@ -94,6 +95,7 @@ class _HomePageState extends State<HomePage> {
                       height: 0.8333333333333334),
                 ),
               )),
+          //Button: Mic
           Positioned(
               top: 722,
               left: 162,
@@ -110,7 +112,18 @@ class _HomePageState extends State<HomePage> {
                     color: Color.fromRGBO(138, 136, 209, 1),
                     borderRadius: BorderRadius.all(Radius.elliptical(65, 65)),
                   ))),
-          Positioned(top: 736, left: 182, child: Icon(Icons.mic)),
+          Positioned(top: 580, left: 182, child: Icon(Icons.mic)),
+          //Bottom Navigation Bar
+          Positioned(top: 754, left: 99,
+            child: Container(
+              width: 192,
+              height: 63,
+              decoration: BoxDecoration(
+                color: Colors.white
+              ),
+            ),
+
+          ),
         ]));
   }
 }

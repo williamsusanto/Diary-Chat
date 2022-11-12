@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:diary_chat/pages/myhomepage.dart';
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class _WelcomePageState extends State<WelcomePage> {
   _navigateToHome() async {
     await Future.delayed(Duration(milliseconds: 1700), () {});
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => HomePage()));
+        context, MaterialPageRoute(builder: (context) => MyHomepage()));
   }
 
   @override
