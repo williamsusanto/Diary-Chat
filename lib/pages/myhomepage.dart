@@ -1,10 +1,9 @@
 import 'package:diary_chat/screens/screens.dart';
-import 'package:diary_chat/theme.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import 'package:diary_chat/screens/bookshelf_bottom.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:diary_chat/screens/bookshelf.dart';
 
 class MyHomepage extends StatefulWidget {
   @override
@@ -12,6 +11,23 @@ class MyHomepage extends StatefulWidget {
 }
 
 class _MyHomepageState extends State<MyHomepage> {
+  int _currentIndex = 0;
+  final List<Widget> _children = [BookShelf(), BookShelf()];
+
+  void _onTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,10 +38,7 @@ class _MyHomepageState extends State<MyHomepage> {
         body: Container(
           width: MediaQuery.of(context).size.width * 1,
           height: MediaQuery.of(context).size.height * 1,
-          decoration: BoxDecoration(
-            //background color
-            color: Color.fromRGBO(245, 245, 245, 1),
-          ),
+          decoration: BoxDecoration(),
           child: Stack(
             children: <Widget>[
               //background gradation feature (have to be fixed)
@@ -47,10 +60,9 @@ class _MyHomepageState extends State<MyHomepage> {
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         textStyle: TextStyle(
-                            color: Color.fromRGBO(82, 82, 82, 1),
-                            fontFamily: 'Poppins',
+                            color: Color(0xFF535353),
                             fontSize: 32,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w500,
                             height: 1.1),
                       ),
                     ),
@@ -59,17 +71,16 @@ class _MyHomepageState extends State<MyHomepage> {
                   Container(
                     child: Image.asset("assets/images/Manito.png"),
                   ),
-                  //Bottom prompt: What can I interest you in today?
+                  //Middle prompt: I am here to listen to you?
                   Container(
                     child: Text(
-                      "What can I interest you in\ntoday?",
+                      "I am here to listen to you!",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         textStyle: TextStyle(
-                          color: Color.fromRGBO(82, 82, 82, 1),
+                          color: Color(0xFF535353),
                           fontSize: 24,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.w500,
                           height: 0.8333333333333334,
                         ),
                       ),
@@ -80,6 +91,38 @@ class _MyHomepageState extends State<MyHomepage> {
 
                     //),
                   ),
+                  //"Let's Chat" Button leads user to the chat room (chat_screen.dart)
+                  Container(
+                    width: 192,
+                    height: 63,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChatScreen()));
+                        },
+                        child: Text(
+                          'Let\'s talk',
+                          style: GoogleFonts.poppins(
+                              fontSize: 22, fontWeight: FontWeight.w500),
+                        )),
+                  ),
+                  //Bottom prompt: Or say "Hey, Manito!"
+                  Container(
+                    child: Text(
+                      "Or say “Hey, Manito!”",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                          color: Color(0xFF535353),
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                          height: 0.8333333333333334,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
 
@@ -87,8 +130,28 @@ class _MyHomepageState extends State<MyHomepage> {
             ],
           ),
         ),
+        //Bottom Navigation Bar which connects to diary page and reminder page
+        bottomNavigationBar: BottomNavigationBar(
+          elevation: 0,
+          backgroundColor: Color(0xFFF5F5F5), //rgba(183, 182, 241, 0.03)
+          selectedLabelStyle: TextStyle(fontSize: 0),
+          unselectedLabelStyle: TextStyle(fontSize: 0),
+          selectedItemColor: Color(0xFFEDA981),
+          onTap: (index) => {},
+          currentIndex: 0,
 
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset("assets/icons/diary_icon.svg"),
+              label: ("diary"),
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset("assets/icons/reminder_icon.svg"),
+              label: ("reminder"),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
