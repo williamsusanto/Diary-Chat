@@ -2,7 +2,7 @@ import 'package:diary_chat/screens/screens.dart';
 import 'package:diary_chat/theme.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-
+import 'package:diary_chat/screens/bookshelf_bottom.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -87,10 +87,8 @@ class _MyHomepageState extends State<MyHomepage> {
             ],
           ),
         ),
-        bottomNavigationBar: SingleChildScrollView(
 
         ),
-      ),
-    );
+      );
   }
 }
