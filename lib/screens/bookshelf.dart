@@ -2,18 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary_chat/screens/bookshelf_body.dart';
 
+
 class BookShelf extends StatefulWidget {
   @override
   _BookShelfState createState() => _BookShelfState();
 }
 
 class _BookShelfState extends State<BookShelf> {
-  int _counter = 0;
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
