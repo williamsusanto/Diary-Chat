@@ -1,6 +1,7 @@
 import 'package:diary_chat/pages/pages.dart';
 import 'package:diary_chat/screens/chats_screen.dart';
 import 'package:diary_chat/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:google_fonts/google_fonts.dart';
@@ -29,8 +30,25 @@ class _WelcomePageState extends State<WelcomePage> {
 
   _navigateToHome() async {
     await Future.delayed(Duration(milliseconds: 1700), () {});
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => MyHomepage()));
+    try {
+      final userCredential = await FirebaseAuth.instance.signInAnonymously();
+      print("Signed in with temporary account.");
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "operation-not-allowed":
+          print("Anonymous auth hasn't been enabled for this project.");
+          break;
+        default:
+          print("Unknown error.");
+      }
+    }
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        print(user.uid);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => MyHomepage()));
+      }
+    });
   }
 
   @override
