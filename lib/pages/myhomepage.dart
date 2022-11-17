@@ -12,25 +12,44 @@ class MyHomepage extends StatefulWidget {
 }
 
 class _MyHomepageState extends State<MyHomepage> {
-
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState> ();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
+        key: _scaffoldKey,
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(
+                child: Container(color:Colors.red),
+              ),
+              ListTile(title: Text("page1")),
+              Divider(thickness: 2,),
+              ListTile(title: Text("page2"),),
+              Divider(thickness: 2,),
+              ListTile(title: Text("page3"),),
+              Divider(thickness: 2,),
+            ],
+          ),
+        ),
         resizeToAvoidBottomInset: false,
 
         //Background
         body: Container(
 
-          width: MediaQuery.of(context).size.width * 1,
-          height: MediaQuery.of(context).size.height * 1,
           child: Stack(
             children: <Widget>[
-              //profile picture
+              //profile picture button that can open the drawer
               Positioned(
-                top: 40,
-                left: 15,
-                child: SvgPicture.asset("assets/icons/profile_picture.svg", width: 49, height: 49),
+                top: 35,
+                left: 17,
+                child: IconButton(
+                  icon: SvgPicture.asset("assets/icons/profile_picture.svg"),
+                  iconSize: 49,
+                  onPressed: () {Scaffold.of(context).openDrawer();},
+              ),
               ),
               //background gradation feature (FIX THE SIZE!!!!!!)
               Positioned(
@@ -131,18 +150,6 @@ class _MyHomepageState extends State<MyHomepage> {
           ),
         ),
         //A drawer shows up when user clicks the profile picture on the left top side
-        drawer: Drawer(
-          child: SingleChildScrollView(
-            child: Container(
-              child: Column(
-                children: [
-                  HeaderDrawer(),
-                  DrawerList(),
-                ],
-              ),
-            ),
-          ),
-        ),
 
         //Bottom Navigation Bar which connects to diary page and reminder page
         bottomNavigationBar: BottomNavigationBar(
