@@ -1,6 +1,7 @@
 import 'package:diary_chat/models/models.dart';
 import 'package:diary_chat/theme.dart';
 import 'package:diary_chat/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,33 +29,61 @@ class _ChatScreenState extends State<ChatScreen> {
   final _textController = TextEditingController();
   String message = '';
   List<Message> messages = [];
+  String botMessage = 'y';
   final database = FirebaseDatabase.instance.ref();
-  String botMessage = '';
-
+  String userUID = '';
+  String chatUID = '';
+  bool _isFirstBuild = true;
+  DatabaseReference newRef = FirebaseDatabase.instance.ref('diaries/');
   @override
   void initState() {
     super.initState();
+    if (FirebaseAuth.instance.currentUser != null) {
+      var temp = FirebaseAuth.instance.currentUser?.uid;
+      userUID = temp.toString();
+    }
     _activateListeners();
   }
 
   void _activateListeners() {
-    const PATH = 'diaries/123/message';
-
-    database.child(PATH).onValue.listen((event) {
-      if (event.snapshot.value.toString() != '') {
-        final String description = event.snapshot.value.toString();
-        setState(() {
-          botMessage = description;
-          messages.insert(
-              0, Message(text: description, createdAt: DateTime.now()));
-        });
+    database.child('users').onValue.listen((event) {
+      if (event.snapshot.hasChild(userUID)) {
+        chatUID = event.snapshot.child(userUID + '/chatUID').value.toString();
+      } else {
+        chatUID = database.child('users/' + userUID).push().key.toString();
+        database.child('users/' + userUID).set({'chatUID': chatUID});
       }
+
+      database.child('diaries/').onValue.listen((event1) {
+        if (_isFirstBuild) {
+          _isFirstBuild = false;
+          newRef = newRef.child(chatUID).push();
+          if (event1.snapshot.hasChild(chatUID)) {
+            for (var child in event1.snapshot.child(chatUID).children) {
+              final String user = child.child('userUID').value.toString();
+              final String time = child.child('time').value.toString();
+              final String message = child.child('message').value.toString();
+              setState(() {
+                messages.insert(
+                    0,
+                    Message(
+                        id: user,
+                        createdAt: DateTime.tryParse(time),
+                        text: message));
+              });
+            }
+          }
+        }
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final diaryRef = database.child('diaries/123');
+    if (!_isFirstBuild) {
+      newRef = FirebaseDatabase.instance.ref('diaries/' + chatUID).push();
+    }
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: Theme.of(context).iconTheme,
@@ -137,8 +166,14 @@ class _ChatScreenState extends State<ChatScreen> {
                           messages.insert(
                               0,
                               Message(
-                                  text: message, createdAt: DateTime.now()));
-                          diaryRef.set({'message': _textController.text});
+                                  id: '1',
+                                  createdAt: DateTime.now(),
+                                  text: message));
+                          newRef.set({
+                            "userUID": '1',
+                            "time": DateTime.now().toString(),
+                            "message": _textController.text
+                          });
                           _textController.clear();
                         }
                       }),
@@ -176,8 +211,14 @@ class _ChatScreenState extends State<ChatScreen> {
                           messages.insert(
                               0,
                               Message(
-                                  text: message, createdAt: DateTime.now()));
-                          diaryRef.set({'message': _textController.text});
+                                  id: '0',
+                                  createdAt: DateTime.now(),
+                                  text: message));
+                          newRef.set({
+                            "userUID": '0',
+                            "time": DateTime.now().toString(),
+                            "message": _textController.text
+                          });
                           _textController.clear();
                         }
                       });
@@ -210,7 +251,7 @@ class _MessageList extends StatelessWidget {
         reverse: true,
         separatorBuilder: (context, index) {
           if (index == messages.length - 1) {
-            return _DateLable(dateTime: messages[index].createdAt);
+            return _DateLabel(dateTime: messages[index].createdAt);
           }
           if (messages.length == 1) {
             return const SizedBox.shrink();
@@ -221,7 +262,7 @@ class _MessageList extends StatelessWidget {
             final nextMessage = messages[index + 1];
             if (!Jiffy(message.createdAt.toLocal())
                 .isSame(nextMessage.createdAt.toLocal(), Units.DAY)) {
-              return _DateLable(
+              return _DateLabel(
                 dateTime: message.createdAt,
               );
             } else {
@@ -234,11 +275,11 @@ class _MessageList extends StatelessWidget {
         itemBuilder: (context, index) {
           if (index < messages.length) {
             final message = messages[index];
-            // if (message.user?.id == context.currentUser?.id) {
-            // return _MessageOwnTile(message: message);
-            // } else {
-            return _MessageTile(message: message);
-            // }
+            if (message.id == '0') {
+              return _MessageOwnTile(message: message);
+            } else {
+              return _MessageTile(message: message);
+            }
           } else {
             return const SizedBox.shrink();
           }
@@ -291,8 +332,8 @@ class _MessageTile extends StatelessWidget {
                               height: 42,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image:
-                                        AssetImage('assets/images/Manito_small.png'),
+                                    image: AssetImage(
+                                        'assets/images/Manito_small.png'),
                                     fit: BoxFit.fitWidth),
                               ))),
                     ])),
@@ -392,8 +433,8 @@ class _MessageOwnTile extends StatelessWidget {
   }
 }
 
-class _DateLable extends StatefulWidget {
-  const _DateLable({
+class _DateLabel extends StatefulWidget {
+  const _DateLabel({
     Key? key,
     required this.dateTime,
   }) : super(key: key);
@@ -401,10 +442,10 @@ class _DateLable extends StatefulWidget {
   final DateTime dateTime;
 
   @override
-  State<_DateLable> createState() => _DateLableState();
+  State<_DateLabel> createState() => _DateLabelState();
 }
 
-class _DateLableState extends State<_DateLable> {
+class _DateLabelState extends State<_DateLabel> {
   late String dayInfo;
 
   @override
