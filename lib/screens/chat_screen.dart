@@ -46,7 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _activateListeners() {
-    database.child('users').onValue.listen((event) {
+    database.child('users/').onValue.listen((event) {
       if (event.snapshot.hasChild(userUID)) {
         chatUID = event.snapshot.child(userUID + '/chatUID').value.toString();
       } else {
@@ -54,24 +54,22 @@ class _ChatScreenState extends State<ChatScreen> {
         database.child('users/' + userUID).set({'chatUID': chatUID});
       }
 
-      database.child('diaries/').onValue.listen((event1) {
+      database.child('diaries/$chatUID').onValue.listen((event1) {
         if (_isFirstBuild) {
           _isFirstBuild = false;
           newRef = newRef.child(chatUID).push();
-          if (event1.snapshot.hasChild(chatUID)) {
-            for (var child in event1.snapshot.child(chatUID).children) {
-              final String user = child.child('userUID').value.toString();
-              final String time = child.child('time').value.toString();
-              final String message = child.child('message').value.toString();
-              setState(() {
-                messages.insert(
-                    0,
-                    Message(
-                        id: user,
-                        createdAt: DateTime.tryParse(time),
-                        text: message));
-              });
-            }
+          for (var child in event1.snapshot.children) {
+            final String user = child.child('userUID').value.toString();
+            final String time = child.child('time').value.toString();
+            final String message = child.child('message').value.toString();
+            setState(() {
+              messages.insert(
+                  0,
+                  Message(
+                      id: user,
+                      createdAt: DateTime.tryParse(time),
+                      text: message));
+            });
           }
         }
       });
