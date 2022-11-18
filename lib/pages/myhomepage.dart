@@ -1,4 +1,4 @@
-import 'package:diary_chat/pages/drawer_header.dart';
+import 'package:diary_chat/widgets/profile_drawer.dart';
 import 'package:diary_chat/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -12,46 +12,21 @@ class MyHomepage extends StatefulWidget {
 }
 
 class _MyHomepageState extends State<MyHomepage> {
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState> ();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         key: _scaffoldKey,
-        drawer: Drawer(
-          child: ListView(
-            children: [
-              DrawerHeader(
-                child: Container(color:Colors.red),
-              ),
-              ListTile(title: Text("page1")),
-              Divider(thickness: 2,),
-              ListTile(title: Text("page2"),),
-              Divider(thickness: 2,),
-              ListTile(title: Text("page3"),),
-              Divider(thickness: 2,),
-            ],
-          ),
-        ),
         resizeToAvoidBottomInset: false,
 
         //Background
         body: Container(
-
           child: Stack(
             children: <Widget>[
-              //profile picture button that can open the drawer
-              Positioned(
-                top: 35,
-                left: 17,
-                child: IconButton(
-                  icon: SvgPicture.asset("assets/icons/profile_picture.svg"),
-                  iconSize: 49,
-                  onPressed: () {Scaffold.of(context).openDrawer();},
-              ),
-              ),
-              //background gradation feature (FIX THE SIZE!!!!!!)
+              //background gradation feature
               Positioned(
                   top: 0,
                   left: 20,
@@ -59,6 +34,17 @@ class _MyHomepageState extends State<MyHomepage> {
                     scaleY: -1,
                     child: SvgPicture.asset('assets/icons/vector12.svg'),
                   )),
+              //profile picture button that can open the drawer
+              Positioned(
+                top: 35,
+                left: 17,
+                child: IconButton(
+                    icon: SvgPicture.asset("assets/icons/profile_picture.svg"),
+                    iconSize: 49,
+                    onPressed: () {
+                      _scaffoldKey.currentState!.openDrawer();
+                    }),
+              ),
               Positioned(
                 top: 100,
                 left: 97,
@@ -66,11 +52,9 @@ class _MyHomepageState extends State<MyHomepage> {
                 right: 97,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
                   children: <Widget>[
                     //Top prompt: Hello I am Manito.
                     Container(
-
                       child: Text(
                         "Hello,\n I am Manito.",
                         textAlign: TextAlign.center,
@@ -85,7 +69,8 @@ class _MyHomepageState extends State<MyHomepage> {
                     ),
                     //Manito image at the center
                     Container(
-                      child: Image.asset("assets/images/Manito.png", height: 201, width: 201),
+                      child: Image.asset("assets/images/Manito.png",
+                          height: 201, width: 201),
                     ),
                     //Middle prompt: I am here to listen to you?
                     Container(
@@ -105,21 +90,21 @@ class _MyHomepageState extends State<MyHomepage> {
                       //textAlign: TextAlign.center,
                       //style: TextStyle(
 
-                    //),
-                  ),
-                  //"Let's Chat" Button leads user to the chat room (chat_screen.dart)
-                  Container(
-                    width: 192,
-                    height: 63,
-                    child: ElevatedButton(
-                        onPressed: () {
+                      //),
+                    ),
+                    //"Let's Chat" Button leads user to the chat room (chat_screen.dart)
+                    Container(
+                      width: 192,
+                      height: 63,
+                      child: ElevatedButton(
+                          onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ChatScreen()));
                           },
-                        //FIX THIS
-                        style: ButtonStyle(),
+                          //FIX THIS
+                          style: ButtonStyle(),
                           child: Text(
                             'Let\'s talk',
                             style: GoogleFonts.poppins(
@@ -144,16 +129,14 @@ class _MyHomepageState extends State<MyHomepage> {
                   ],
                 ),
               ),
-
-              //profile photo icon
             ],
           ),
         ),
-        //A drawer shows up when user clicks the profile picture on the left top side
+
+        drawer: Profile_Drawer(),
 
         //Bottom Navigation Bar which connects to diary page and reminder page
         bottomNavigationBar: BottomNavigationBar(
-
           currentIndex: 0,
           elevation: 0,
           backgroundColor: Color(0xFFF5F5F5), //rgba(183, 182, 241, 0.03)
@@ -166,21 +149,18 @@ class _MyHomepageState extends State<MyHomepage> {
 
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: new SvgPicture.asset("assets/icons/diary_icon.svg",),
+              icon: new SvgPicture.asset(
+                "assets/icons/diary_icon.svg",
+              ),
               label: ("diary"),
             ),
-             BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: new SvgPicture.asset("assets/icons/reminder_icon.svg"),
               label: ("reminder"),
             ),
           ],
-
         ),
       ),
     );
   }
-}
-
-Widget DrawerList(){
-  return Container();
 }
