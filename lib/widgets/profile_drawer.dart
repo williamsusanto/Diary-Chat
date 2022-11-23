@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:diary_chat/pages/myhomepage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 
 //when user clicks the profile icon it will open a drawer
 //A drawer that user can access user information, chatbot settings, app settings, notifications
@@ -9,13 +9,14 @@ class Profile_Drawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Color(0xFFFFFFFF),
       child: ListView(
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
             margin: EdgeInsets.zero,
-            decoration: BoxDecoration(color: const Color(0xffFFFFFF)),
+            decoration: BoxDecoration(color: const Color(0xffFFFFFF),),
             accountName: Text(
               "User Name",
               style: GoogleFonts.poppins(
@@ -43,11 +44,12 @@ class Profile_Drawer extends StatelessWidget {
             ),
           ),
           Divider(
-            thickness: 0.5,
+            thickness: 0.7,
             indent: 30,
             endIndent: 30,
             color: Color(0xFFBBBBC0),
           ),
+
           ListTile(
 
             leading: Icon(
@@ -114,7 +116,7 @@ class Profile_Drawer extends StatelessWidget {
           ),
 
           Divider(
-            thickness: 0.5,
+            thickness: 0.7,
             indent: 30,
             endIndent: 30,
             color: Color(0xFFBBBBC0),
