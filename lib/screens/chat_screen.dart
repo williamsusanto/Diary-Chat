@@ -5,10 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
+import 'package:dialogflow_grpc/dialogflow_grpc.dart';
+import 'package:dialogflow_grpc/generated/google/cloud/dialogflow/v2beta1/session.pb.dart';
 
 class ChatScreen extends StatefulWidget {
   static Route route(MessageData data) => MaterialPageRoute(
@@ -27,14 +30,14 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final _textController = TextEditingController();
-  String message = '';
   List<Message> messages = [];
-  String botMessage = 'y';
   final database = FirebaseDatabase.instance.ref();
   String userUID = '';
   String chatUID = '';
   bool _isFirstBuild = true;
   DatabaseReference newRef = FirebaseDatabase.instance.ref('diaries/');
+  DialogflowGrpcV2Beta1? dialogflow;
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
       userUID = temp.toString();
     }
     _activateListeners();
+    initPlugin();
   }
 
   void _activateListeners() {
@@ -52,6 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
       } else {
         chatUID = database.child('users/' + userUID).push().key.toString();
         database.child('users/' + userUID).set({'chatUID': chatUID});
+        // database.child('users/' + userUID).update({'user': userName});
       }
 
       database.child('diaries/$chatUID').onValue.listen((event1) {
@@ -76,8 +81,72 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  Future<void> initPlugin() async {
+    // _recorderStatus = _recorder.status.listen((status) {
+    //   if (mounted)
+    //     setState(() {
+    //       _isRecording = status == SoundStreamStatus.Playing;
+    //     });
+    // });
+
+    // await Future.wait([
+    //   _recorder.initialize()
+    // ]);
+
+    // TODO Get a Service account
+    // Get a Service account
+    final serviceAccount = ServiceAccount.fromString(
+        '${(await rootBundle.loadString('assets/credentials1.json'))}');
+    // Create a DialogflowGrpc Instance
+    dialogflow = DialogflowGrpcV2Beta1.viaServiceAccount(serviceAccount);
+  }
+
+  // void stopStream() async {
+  //   await _recorder.stop();
+  //   await _audioStreamSubscription?.cancel();
+  //   await _audioStream?.close();
+  // }
+
+  void handleSubmitted(text) async {
+    print(text);
+    _textController.clear();
+
+    //TODO Dialogflow Code
+    DetectIntentResponse data = await dialogflow!.detectIntent(text, 'en-US');
+    String fulfillmentText = data.queryResult.fulfillmentText;
+    if (fulfillmentText.isNotEmpty) {
+      setState(() {
+        messages.insert(0,
+            Message(id: '1', createdAt: DateTime.now(), text: fulfillmentText));
+        newRef.set({
+          "userUID": '1',
+          "time": DateTime.now().toString(),
+          "message": fulfillmentText
+        });
+      });
+    }
+  }
+
+  // void handleStream() async {
+  //   _recorder.start();
+
+  //   _audioStream = BehaviorSubject<List<int>>();
+  //   _audioStreamSubscription = _recorder.audioStream.listen((data) {
+  //     print(data);
+  //     _audioStream.add(data);
+  //   });
+
+  //   // TODO Create SpeechContexts
+  //   // Create an audio InputConfig
+
+  //   // TODO Make the streamingDetectIntent call, with the InputConfig and the audioStream
+  //   // TODO Get the transcript and detectedIntent and show on screen
+
+  // }
+
   @override
   Widget build(BuildContext context) {
+    var myFocusNode = FocusNode();
     if (!_isFirstBuild) {
       newRef = FirebaseDatabase.instance.ref('diaries/' + chatUID).push();
     }
@@ -152,6 +221,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 16.0, right: 10),
                     child: TextField(
+                      focusNode: myFocusNode,
                       controller: _textController,
                       style: TextStyle(fontSize: 14),
                       decoration: const InputDecoration(
@@ -160,19 +230,20 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       onSubmitted: (_) => setState(() {
                         if (_textController.text.isNotEmpty) {
-                          message = _textController.text;
                           messages.insert(
                               0,
                               Message(
-                                  id: '1',
+                                  id: '0',
                                   createdAt: DateTime.now(),
-                                  text: message));
+                                  text: _textController.text));
                           newRef.set({
-                            "userUID": '1',
+                            "userUID": '0',
                             "time": DateTime.now().toString(),
                             "message": _textController.text
                           });
+                          handleSubmitted(_textController.text);
                           _textController.clear();
+                          myFocusNode.requestFocus();
                         }
                       }),
                     ),
@@ -205,19 +276,20 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: () {
                       setState(() {
                         if (_textController.text.isNotEmpty) {
-                          message = _textController.text;
                           messages.insert(
                               0,
                               Message(
                                   id: '0',
                                   createdAt: DateTime.now(),
-                                  text: message));
+                                  text: _textController.text));
                           newRef.set({
                             "userUID": '0',
                             "time": DateTime.now().toString(),
                             "message": _textController.text
                           });
+                          handleSubmitted(_textController.text);
                           _textController.clear();
+                          myFocusNode.requestFocus();
                         }
                       });
                     },
