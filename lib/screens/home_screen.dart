@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'chat.dart';
+
 //home screen of Manito
 //User talk to Manito by clicking Let's Talk button
 //User can open a drawer of list of settings by clicking a profile icon
@@ -99,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ChatScreen()));
+                                builder: (context) => Chat()));
                       },
 //FIX THIS
                       style: ButtonStyle(),
